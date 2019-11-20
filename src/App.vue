@@ -30,8 +30,9 @@
         </div>
 
         <preview :dropped="dropped"></preview>
-        
+        <button class="button is-info is-right" @click="savePreviewHTML">Save Preview</button>
       </div>
+     
     </div>
 
   </div>
@@ -45,7 +46,6 @@ import Preview from './Preview.vue'
 
 export default {
   name: 'App',
-
   components: {
     Toolbar,
     Preview
@@ -90,14 +90,14 @@ export default {
           label: 'Click me!',
           color: 'blue',
         },
-        links: { 
-          key: 'links',
-          name: 'social links',
-          marginTop: 'some',
-          marginBottom: 'none',
-          frozen: true, // no resizing this component
-          links: ['fa-facebook', 'fa-twitter', 'fa-instagram'],
-        },
+        // links: { 
+        //   key: 'links',
+        //   name: 'social links',
+        //   marginTop: 'some',
+        //   marginBottom: 'none',
+        //   frozen: true, // no resizing this component
+        //   links: ['fa-facebook', 'fa-twitter', 'fa-instagram'],
+        // },
         divider: {
           key: 'divider',
           name: 'divider',
@@ -149,7 +149,6 @@ export default {
     },
   },
 
-
   methods:
   {
     /**
@@ -160,8 +159,8 @@ export default {
       this.dropped = localStorage.getItem('dropped') ? JSON.parse(localStorage.getItem('dropped')) : [];
       this.autoSave = localStorage.getItem('autoSave') ? JSON.parse(localStorage.getItem('autoSave')) : true;
       this.autoEdit = localStorage.getItem('autoEdit') ? JSON.parse(localStorage.getItem('autoEdit')) : false;
+     
     },
-
 
     save()
     {
@@ -271,13 +270,15 @@ export default {
       Bus.fire('highlight-container', index);
     },
 
-
     destroyDropzoneNextToComponent(index)
     {
       let temp = JSON.parse(JSON.stringify(this.dropped[index])) // make non-reactive copy
       temp.hasDropzone = false;
 
       this.$set(this.dropped, index, temp);
+    },
+    savePreviewHTML(){
+      console.log(this.dropped);
     },
   },
 }

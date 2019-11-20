@@ -26,20 +26,20 @@ export default  {
   },
 
   data()
-  {
+  {    
     return {
       rowsOfComponents: {
         // organized by row because Bulma has bugs in their grid framework
         first: [this.draggable.text, this.draggable.image],
         second: [this.draggable.divider, this.draggable.button],
-        third: [this.draggable.space, this.draggable.links],
+        third: [this.draggable.space],
       }
     }
   },
 
   mounted()
   {
-    this.makeComponentsDraggable();
+    this.makeComponentsDraggable();    
   },
 
   methods:

@@ -44,8 +44,7 @@
       <p class="quote">Just drag and drop elements over to here!</p>
       <p class="quote">Then hover over them to edit, clone, or delete</p>
     </div>
-    
-      <button class="button is-info" @click="saveHTML">SAVE HTML</button>
+
   </div>
 </template>
 
@@ -79,7 +78,7 @@ export default  {
 
   mounted()
   {
-   
+     
     this.initDropzones()
 
     // whenever a container is edited, briefly highlight its borders
@@ -177,10 +176,7 @@ export default  {
           event.target.classList.remove('drop-target');
         }
       });
-    },
-    saveHTML(){
-      console.log(this.$el);
-    },
+    }
   },
 };
 

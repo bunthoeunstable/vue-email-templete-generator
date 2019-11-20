@@ -67,6 +67,7 @@ export default  {
     Bus.listen('component-added', (index) => { 
       this.makeContainersResizable()
     });
+    console.log(this.dropped);
   },
 
   computed:
@@ -125,7 +126,6 @@ export default  {
     {
       Bus.fire('clone-component', {index: this.index, isSibling: this.isSibling});
     },
-
 
     /**
      * Add any user custom classes to the component's container
