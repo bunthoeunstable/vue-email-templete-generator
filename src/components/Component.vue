@@ -62,12 +62,10 @@ export default  {
   mounted()
   {
     this.makeContainersResizable()
-
     // whenever a component is edited, briefly highlight its container
     Bus.listen('component-added', (index) => { 
       this.makeContainersResizable()
     });
-    console.log(this.dropped);
   },
 
   computed:

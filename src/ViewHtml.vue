@@ -120,7 +120,7 @@ export default {
 .app-wrapper
   margin: 0 auto
   max-width: 1000px
-  margin-top: 100px
+  margin-top: 0px
   height: 900px
 
 .app-heading

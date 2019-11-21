@@ -2,14 +2,18 @@
   <div class="app-wrapper">
 
     <div class="columns">
+        <div class="column is-12" v-if="msg">
+           <div v-if="msg_status==200" class="notification is-primary">{{msg}}</div>
+           <div v-if="msg_status!=200" class="notification is-danger">{{msg}}</div>
+        </div>
+    </div>
 
+    <div class="columns">
       <div class="column is-5">
         <div class="app-heading heading has-text-centered">
-          <p class="title">Toolbar</p>
+          <p style="font-weight: bold;font-size: 16px;text-decoration: underline;">Toolbar</p>
         </div>
-
         <toolbar :draggable="components" :dropped="dropped"></toolbar>
-
         <!-- <p class="app-control">
           <label class="checkbox">
             <input type="checkbox" v-model="autoEdit">
@@ -22,20 +26,19 @@
             Automatically save template
           </label>
         </p> -->
+        <p> 
+           <button style="float: right;" class="button is-info" @click="savePreviewHTML">Save Preview</button>
+           <a style="float: right; margin-right: 10px;" class="button is-primary" href="/marketing?tab=1">Back</a>
+           <!-- <a class="button is-success is-right" href="/mail-content-view-html">View HTML</a>  -->
+        </p>
       </div>
-
       <div class="column is-7">
         <div class="app-heading heading has-text-centered">
-          <p class="title">Preview</p>
+          <p style="font-weight: bold;font-size: 16px;text-decoration: underline;">Preview</p>
         </div>
-
-        <preview :dropped="dropped"></preview>
-
-        <button class="button is-info is-right" @click="savePreviewHTML">Save Preview</button>
-        <a class="button is-success is-right" href="/#/email-template-builder/view-html">View HTML</a>
-      
-      </div>
-     
+        <preview :dropped="dropped"></preview>      
+      </div>    
+       
     </div>
 
   </div>
@@ -57,6 +60,8 @@ export default {
   data ()
   {
     return {
+      msg: "",
+      msg_status:200,
       dropped: [],
       autoEdit: true,
       autoSave: true,
@@ -122,7 +127,8 @@ export default {
    */
   mounted()
   {
-    this.load();
+   
+    this.getPreviewHTML();
 
     Bus.listen('save', () => { this.save() });
     Bus.listen('component-dropped', (event) => { this.addComponent(event); this.save() });
@@ -257,7 +263,6 @@ export default {
       }
     },
 
-
     createDropzoneNextToComponent(index)
     {
       if (this.dropped[index].hasDropzone || this.dropped[index].sibling) {
@@ -281,7 +286,35 @@ export default {
       this.$set(this.dropped, index, temp);
     },
     savePreviewHTML(){
-      console.log(this.dropped);
+
+      let _data = {
+        content:this.dropped
+      }      
+      this.$http.post("/api/v1/mail-content/"+this.$route.params.id, _data)
+          .then(response => {
+           
+            this.msg = response.data.msg;          
+            this.msg_status = response.status;
+            this.ajaxRequest = false;
+          }).catch((err) => {
+            if(err.data.msg){
+              this.msg = err.data.msg;
+            }else{
+              this.msg = err.statusText;
+            }        
+            this.msg_status = err.status;
+          });
+
+    }, getPreviewHTML(){ 
+         this.$http.get("/api/v1/mail-content/"+this.$route.params.id)
+          .then(response => {            
+            if(response.status==200){
+              if(response.data.data.content){
+                localStorage.setItem('dropped', response.data.data.content);
+              }              
+            }
+            this.load();           
+          }).catch((err) => {});
     },
   },
 }
@@ -294,16 +327,16 @@ export default {
 .app-wrapper
   margin: 0 auto
   max-width: 1000px
-  margin-top: 100px
-  height: 900px
+  margin-top: 0px;
+  min-height: 900px
 
 .app-heading
-  margin-bottom: 20px
+  margin-bottom: 15px
   .title
     color: $blue
 
 .app-control
-  padding-left: 35px
+  padding-left: 15px
   padding-bottom: 10px
   background: white
   &:not(:last-child)

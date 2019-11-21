@@ -4,13 +4,16 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import App from './App'
 import ViewHtml from './ViewHtml'
+import VueResource from 'vue-resource';
 
 Vue.use(VueRouter)
+Vue.use(VueResource)
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
-    { path: '/',  component: App },
-    { path: '/email-template-builder/view-html',  component: ViewHtml } 
+    { path: '/mail-content/:id',  component: App },
+    { path: '/mail-content-view-html',  component: ViewHtml } 
   ]
 })
 
