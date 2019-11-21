@@ -10,7 +10,7 @@
 
         <toolbar :draggable="components" :dropped="dropped"></toolbar>
 
-        <p class="app-control">
+        <!-- <p class="app-control">
           <label class="checkbox">
             <input type="checkbox" v-model="autoEdit">
             Show edit page after adding component
@@ -21,7 +21,7 @@
             <input type="checkbox" v-model="autoSave">
             Automatically save template
           </label>
-        </p>
+        </p> -->
       </div>
 
       <div class="column is-7">
@@ -30,7 +30,10 @@
         </div>
 
         <preview :dropped="dropped"></preview>
+
         <button class="button is-info is-right" @click="savePreviewHTML">Save Preview</button>
+        <a class="button is-success is-right" href="/#/email-template-builder/view-html">View HTML</a>
+      
       </div>
      
     </div>
@@ -55,7 +58,7 @@ export default {
   {
     return {
       dropped: [],
-      autoEdit: false,
+      autoEdit: true,
       autoSave: true,
       components: {
         // the types of drop-in components and their default settings

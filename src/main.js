@@ -9,7 +9,7 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
-    { path: '/email-template-builder',  component: App },
+    { path: '/',  component: App },
     { path: '/email-template-builder/view-html',  component: ViewHtml } 
   ]
 })
