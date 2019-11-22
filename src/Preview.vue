@@ -90,11 +90,10 @@ export default  {
       beingEdited: { index: null, isSibling: false },
     }
   },
-
   mounted()
   {        
     this.initDropzones()
-    this.email_subject = this.subject;
+    this.email_subject = this.subject;     
     // whenever a container is edited, briefly highlight its borders
     Bus.listen('highlight-container', (index) => this.highlightContainer(index))
     
@@ -193,8 +192,11 @@ export default  {
       });
     }
   },
-  updated() {      
-      this.$emit('updatedSubject', this.email_subject);    
+  updated() { 
+      this.$emit('updatedSubject', this.email_subject);   
+      if(!this.email_subject && this.subject){
+        this.email_subject = this.subject;
+      }
   }
 };
 
