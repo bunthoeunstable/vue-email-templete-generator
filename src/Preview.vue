@@ -1,5 +1,18 @@
 <template>
   <div class="preview-wrapper">
+
+    <div>
+
+      <div class="level-item">
+        <p class="subtitle is-12">
+          Subject :
+        </p>
+        <p class="control">
+          <input type="text" class="input" v-model="email_subject">
+        </p>
+      </div>  
+    </div>  
+
     <template v-if="dropped.length">
 
       <!-- always a dropzone on top -->
@@ -60,6 +73,7 @@ export default  {
 
   props:
   {
+    subject: String,
     dropped: Array,
   },
 
@@ -70,17 +84,17 @@ export default  {
 
   data()
   {
-    return {
+    return {  
+      email_subject:"",        
       highlightedContainers: [],
       beingEdited: { index: null, isSibling: false },
     }
   },
 
   mounted()
-  {
-     
+  {        
     this.initDropzones()
-
+    this.email_subject = this.subject;
     // whenever a container is edited, briefly highlight its borders
     Bus.listen('highlight-container', (index) => this.highlightContainer(index))
     
@@ -93,6 +107,7 @@ export default  {
 
   methods:
   {
+    
     /**
      * Flash this component's container after it's newly created
      *
@@ -178,6 +193,9 @@ export default  {
       });
     }
   },
+  updated() {      
+      this.$emit('updatedSubject', this.email_subject);    
+  }
 };
 
 </script>

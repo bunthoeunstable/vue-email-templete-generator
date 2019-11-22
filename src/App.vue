@@ -36,7 +36,7 @@
         <div class="app-heading heading has-text-centered">
           <p style="font-weight: bold;font-size: 16px;text-decoration: underline;">Preview</p>
         </div>
-        <preview :dropped="dropped"></preview>      
+        <preview :subject="subject" @updatedSubject="createdSubject" :dropped="dropped"></preview>      
       </div>    
        
     </div>
@@ -56,10 +56,10 @@ export default {
     Toolbar,
     Preview
   },
-
   data ()
   {
     return {
+      subject:"",
       msg: "",
       msg_status:200,
       dropped: [],
@@ -160,6 +160,9 @@ export default {
 
   methods:
   {
+    createdSubject(input){   
+      this.subject =  input;
+    },
     /**
      * Check for local browser storage
      */
@@ -288,7 +291,8 @@ export default {
     savePreviewHTML(){
 
       let _data = {
-        content:this.dropped
+        content:this.dropped,
+        subject:this.subject
       }      
       this.$http.post("/api/v1/mail-content/"+this.$route.params.id, _data)
           .then(response => {
@@ -311,6 +315,7 @@ export default {
             if(response.status==200){
               if(response.data.data.content){
                 localStorage.setItem('dropped', response.data.data.content);
+                this.subject = response.data.data.subject;
               }              
             }
             this.load();           
