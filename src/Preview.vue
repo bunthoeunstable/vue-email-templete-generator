@@ -72,8 +72,7 @@ export default  {
   name: 'Preview',
 
   props:
-  {
-    subject: String,
+  {    
     dropped: Array,
   },
 
@@ -93,13 +92,16 @@ export default  {
   mounted()
   {        
     this.initDropzones()
-    this.email_subject = this.subject;     
+
+    Bus.listen('updated_subject', (val) => {
+      this.email_subject = val;
+    });  
     // whenever a container is edited, briefly highlight its borders
     Bus.listen('highlight-container', (index) => this.highlightContainer(index))
     
     // when component is being edited, highlight the container in red
     Bus.listen('editing-component', (data) => {
-      this.beingEdited = { index: data.index, isSibling: data.isSibling}
+      this.beingEdited = { index: data.index, isSibling: data.isSibling}      
     })
     Bus.listen('done-editing', (data) => this.beingEdited.index = null)
   },
@@ -190,13 +192,10 @@ export default  {
           event.target.classList.remove('drop-target');
         }
       });
-    }
+    } 
   },
-  updated() { 
+  updated() {    
       this.$emit('updatedSubject', this.email_subject);   
-      if(!this.email_subject && this.subject){
-        this.email_subject = this.subject;
-      }
   }
 };
 

@@ -36,7 +36,7 @@
         <div class="app-heading heading has-text-centered">
           <p style="font-weight: bold;font-size: 16px;text-decoration: underline;">Preview</p>
         </div>
-        <preview :subject="subject" @updatedSubject="createdSubject" :dropped="dropped"></preview>      
+        <preview @updatedSubject="createdSubject" :dropped="dropped"></preview>      
       </div>    
        
     </div>
@@ -315,7 +315,7 @@ export default {
             if(response.status==200){
               if(response.data.data.content){
                 localStorage.setItem('dropped', response.data.data.content);
-                this.subject = response.data.data.subject;
+                Bus.fire('updated_subject', response.data.data.subject);
               }              
             }
             this.load();           
